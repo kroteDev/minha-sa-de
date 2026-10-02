@@ -1,0 +1,107 @@
+// Prisma Schema para HealthTrack - Monitor de Saúde
+// Suporte a PostgreSQL com índices otimizados para séries temporais
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum GlucoseContext {
+  FASTING       // Em jejum
+  PRE_MEAL      // Antes da refeição
+  POST_MEAL     // Após refeição (1h a 2h)
+  BEDTIME       // Antes de dormir
+  RANDOM        // Casual / aleatório
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+model User {
+  id            String             @id @default(uuid())
+  email         String             @unique
+  name          String
+  passwordHash  String
+  birthDate     DateTime?
+  gender        Gender             @default(OTHER)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  // Relacionamentos com as métricas de saúde
+  glucoseLogs       GlucoseLog[]
+  bloodPressureLogs BloodPressureLog[]
+  weightLogs        WeightLog[]
+  heightLogs        HeightLog[]
+
+  @@map("users")
+}
+
+model GlucoseLog {
+  id          String         @id @default(uuid())
+  userId      String
+  value       Float          // mg/dL
+  context     GlucoseContext @default(FASTING)
+  notes       String?
+  measuredAt  DateTime       @default(now())
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, measuredAt(sort: Desc)])
+  @@map("glucose_logs")
+}
+
+model BloodPressureLog {
+  id          String   @id @default(uuid())
+  userId      String
+  systolic    Int      // mmHg (Pressão Sistólica)
+  diastolic   Int      // mmHg (Pressão Diastólica)
+  pulse       Int?     // bpm (Frequência Cardíaca)
+  notes       String?
+  measuredAt  DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, measuredAt(sort: Desc)])
+  @@map("blood_pressure_logs")
+}
+
+model WeightLog {
+  id          String   @id @default(uuid())
+  userId      String
+  weightKg    Float    // kg (ex: 74.5)
+  notes       String?
+  measuredAt  DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, measuredAt(sort: Desc)])
+  @@map("weight_logs")
+}
+
+model HeightLog {
+  id          String   @id @default(uuid())
+  userId      String
+  heightCm    Float    // cm (ex: 175.0)
+  notes       String?
+  measuredAt  DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, measuredAt(sort: Desc)])
+  @@map("height_logs")
+}

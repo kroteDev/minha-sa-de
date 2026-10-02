@@ -1,0 +1,6 @@
+{
+  "name": "Monitor de Saúde",
+  "description": "Aplicativo para monitoramento diário de saúde: Glicose, Pressão Arterial, Peso, Altura, IMC, gráficos históricos e exportação de relatórios.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

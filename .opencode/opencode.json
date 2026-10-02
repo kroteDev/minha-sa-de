@@ -1,0 +1,24 @@
+{
+  "$schema": "https://opencode.ai/schema/opencode.json",
+  "name": "HealthTrack",
+  "description": "Monitor Diário de Saúde (Glicose, Pressão Arterial, Peso, Altura, IMC) - Clean Architecture, Sem Vercel, Servidor Dedicado / Docker",
+  "version": "1.0.0",
+  "instructions": [
+    "AGENTS.md",
+    "README.md"
+  ],
+  "context": {
+    "framework": "React 19 + TypeScript + Vite + Tailwind CSS",
+    "architecture": "Clean Architecture (Domain, UseCases, Repositories, Presentation)",
+    "infrastructure": "Self-hosted / Servidor Dedicado Linux com Docker & Nginx (Sem Vercel)",
+    "database": "PostgreSQL 16 via Prisma ORM e LocalStorage (Offline-First)",
+    "clinicalStandards": ["SBD (Glicemia)", "SBC (Pressão Arterial)", "OMS (IMC)"]
+  },
+  "rules": [
+    "O domínio (src/domain/) é estritamente puro TypeScript e NUNCA deve importar React, Prisma ou bibliotecas de UI.",
+    "Nenhuma dependência ou configuração proprietária de Vercel/serverless deve ser introduzida.",
+    "Todas as variáveis de ambiente devem ser estritamente locais (.env, .env.local, .env.production).",
+    "Sempre validar tipos com 'npm run lint' (tsc --noEmit) com 0 erros antes de concluir qualquer tarefa.",
+    "Ao adicionar novas métricas clínicas, seguir o padrão em 9 etapas documentado na skill 'add-health-metric'."
+  ]
+}
