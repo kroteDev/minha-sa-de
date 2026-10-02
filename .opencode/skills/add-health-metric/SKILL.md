@@ -142,7 +142,7 @@ async deleteSleep(id: string): Promise<void> {
    - Criar `LocalStorageSleepRepository implements ISleepRepository` usando chave `healthtrack_sleep_logs`.
    - Adicionar dados de semente (seed) na conta demo de Carlos Silva.
 2. **Prisma (`prisma/schema.prisma` & `PrismaHealthRepository.ts`):**
-   - Declarar modelo `model SleepLog` relacionado a `User`.
+   - Declarar modelo `model SleepLog` relacionado a `User` (a conexão de banco é configurada em `prisma.config.ts`).
 
 ### Etapa 6: Modal de Inserção/Edição (`src/components/crud/SleepModal.tsx`)
 Criar o formulário responsivo com campos:
